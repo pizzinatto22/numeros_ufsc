@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  node:
+    image: "node:8"
+    restart: always
+    user: "node"
+    working_dir: /home/node/app
+    volumes:
+      - ./server:/home/node/app
+    ports:
+      - "3002:3002"
+    command: "npm start"
+
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./client/dist/client:/usr/share/nginx/html
+    ports:
+      - "82:80"
+    environment:
+      - NGINX_HOST=numeros.cse.ufsc.br
+      - NGINX_PORT=80
+    depends_on:
+      - "node"
