@@ -2,7 +2,8 @@ const servidores = require("./servidores");
 const alunos = require("./graduacao");
 const pos = require("./pos_graduacao");
 const http = require('http');
-const moment = require('moment');
+var moment = require('moment-timezone');
+
 
 let cache = {};
 let horaCache = null;
@@ -32,7 +33,7 @@ async function requestListener (req, res) {
       cache.pos = {}
     }
 
-    cache.hora = moment(horaCache).format("DD/MM/YYYY HH:mm:ss")
+    cache.hora = moment(horaCache).tz("America/Sao_Paulo").format("DD/MM/YYYY HH:mm:ss")
   }
 
   res.writeHead(200, {
