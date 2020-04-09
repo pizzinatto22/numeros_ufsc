@@ -1,0 +1,210 @@
+<div class="container" *ngIf="dados">
+  <div class="container pb-4">
+    <h1>Alunos</h1>
+    <div class="p-2">
+      <h3>Dados gerais sobre os alunos do CSE</h3>
+      <div class="p-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th class="num">Vagas</th>
+              <th class="num">Alunos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Graduação presencial</td>
+              <td class="num">{{dados.graduacao.presencial_vagas}}</td>
+              <td class="num">{{dados.graduacao.presencial_alunos}}</td>
+            </tr>
+            <tr>
+              <td>Graduação EAD</td>
+              <td class="num">{{dados.graduacao.ead_vagas}}</td>
+              <td class="num">{{dados.graduacao.ead_alunos}}</td>
+            </tr>
+            <tr>
+              <td>Mestrado</td>
+              <td class="num"></td>
+              <td class="num">{{dados.pos.mestrado}}</td>
+            </tr>
+            <tr>
+              <td>Mestrado profissionalizante</td>
+              <td class="num"></td>
+              <td class="num">{{dados.pos.mestrado_profissionalizante}}</td>
+            </tr>
+            <tr>
+              <td>Doutorado</td>
+              <td class="num"></td>
+              <td class="num">{{dados.pos.doutorado}}</td>
+            </tr>
+            <tr>
+              <td>Pós doutorado</td>
+              <td class="num"></td>
+              <td class="num">{{dados.pos.pos_doutorado}}</td>
+            </tr>
+            <tr *ngIf="dados.pos.outro > 0">
+              <td>Outros</td>
+              <td class="num"></td>
+              <td class="num">{{dados.pos.outro}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total geral</td>
+              <td class="num">{{dados.graduacao.ead_vagas + dados.graduacao.presencial_vagas}}</td>
+              <td class="num">{{
+                dados.graduacao.presencial_alunos +
+                dados.graduacao.ead_alunos +
+                dados.pos.mestrado +
+                dados.pos.mestrado_profissionalizante +
+                dados.pos.doutorado +
+                dados.pos.pos_doutorado +
+                dados.pos.outro
+              }}</td>
+            </tr>
+            <tr>
+              <td>Total graduação (presencial + EAD)</td>
+              <td class="num">{{dados.graduacao.ead_vagas + dados.graduacao.presencial_vagas}}</td>
+              <td class="num">{{
+                dados.graduacao.presencial_alunos +
+                dados.graduacao.ead_alunos
+              }}</td>
+            </tr>
+            <tr>
+              <td>Total pós-graduação (mestrado + mestrado profissionalizante + doutorado)</td>
+              <td class="num"></td>
+              <td class="num">{{
+                dados.pos.mestrado +
+                dados.pos.mestrado_profissionalizante +
+                dados.pos.doutorado
+              }}</td>
+            </tr>
+            <tr>
+              <td>Total pós-graduação (mestrado + mestrado profissionalizante + doutorado + pós-doutorado)</td>
+              <td class="num"></td>
+              <td class="num">{{
+                dados.pos.mestrado +
+                dados.pos.mestrado_profissionalizante +
+                dados.pos.doutorado +
+                dados.pos.pos_doutorado
+              }}</td>
+            </tr>
+
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="container pt-4 pb-4">
+    <h1>Servidores</h1>
+    <div class="p-2">
+      <h3>Dados gerais sobre os servidores do CSE</h3>
+
+      <div class="p-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th class="num">Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Técnicos</td>
+              <td class="num">{{soma(dados.servidores.tecnicos)}}</td>
+            </tr>
+            <tr>
+              <td>Professores</td>
+              <td class="num">{{soma(dados.servidores.professores)}}</td>
+            </tr>
+            <tr>
+              <td>Outros</td>
+              <td class="num">{{soma(dados.servidores.outros)}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total geral</td>
+              <td class="num">{{
+                soma(dados.servidores.tecnicos) +
+                soma(dados.servidores.professores) +
+                soma(dados.servidores.outros)
+              }}</td>
+            </tr>
+            <tr>
+              <td>Total parcial (técnicos + professores)</td>
+              <td class="num">{{
+                soma(dados.servidores.tecnicos) +
+                soma(dados.servidores.professores)
+              }}</td>
+            </tr>
+
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container pt-4 pb-4">
+    <h1>Servidores por cargo</h1>
+    <div class="p-2" *ngFor="let s of ['professores', 'tecnicos', 'outros']">
+      <h3>Servidores {{s}} </h3>
+      <div class="p-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Cargo</th>
+              <th class="num">Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of dados.servidores[s] | keyvalue">
+              <td>{{t.key}}</td>
+              <td class="num">{{t.value}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total geral</td>
+              <td class="num">{{soma(dados.servidores[s])}}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container pt-4 pb-4">
+    <h1>Servidores por localização</h1>
+    <div class="p-2" *ngFor="let s of dados.servidores.setores | keyvalue">
+      <h3>Servidores {{s.key}} </h3>
+      <div class="p-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th class="num">Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let t of dados.servidores.setores[s.key] | keyvalue: reverseKeyOrder">
+              <tr>
+                <td class="auto">{{t.key}}</td>
+                <td class="num">{{soma(t.value)}}</td>
+              </tr>
+              <tr *ngFor="let c of dados.servidores.setores[s.key][t.key] | keyvalue" class="drilldown">
+                <td>{{c.key}}</td>
+                <td class="num">{{c.value}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <p class="info">Data da coleta dos dados: {{dados.hora}} (atualizado a cada 5 minutos)</p>
+</div>
